@@ -1,4 +1,8 @@
+/* (C)2022 */
 package io.github.shalk.mockito;
+
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -7,10 +11,6 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-
-import java.lang.reflect.Constructor;
-
-import static org.mockito.ArgumentMatchers.anyString;
 
 class Foo {
 
@@ -114,5 +114,16 @@ public class AppTest {
 
       Assertions.assertEquals("mock", result);
     }
+  }
+
+  @Test
+  void mockSpecificArgument() {
+    Foo foo = Mockito.mock(Foo.class);
+    Mockito.when(foo.echo(eq("hello"))).thenReturn("nonono");
+    Assertions.assertEquals("nonono", foo.echo("hello"));
+    Mockito.verify(foo).echo("hello");
+
+    Assertions.assertNull(foo.echo("other"));
+    Mockito.verify(foo).echo("other");
   }
 }
